@@ -1,4 +1,9 @@
 import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error
+
 iris=pd.read_csv('IRIS-DATA.csv')
 print(iris.head())
 
@@ -11,6 +16,21 @@ X_train, X_test, y_train, y_test=train_test_split(X, y, test_size=0.2, random_st
 from sklearn.linear_model import LinearRegression
 model= LinearRegression()
 model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+
+tss = np.sum((y_test - np.mean(y_test))**2)
+
+rss = np.sum((y_test - y_pred)**2)
+
+ess = tss - rss
+
+mae = mean_absolute_error(y_test, y_pred)
+
+print(f"TSS: {tss}")
+print(f"RSS: {rss}")
+print(f"ESS: {ess}")
+print(f"MAE: {mae}")
+
 
 y_pred=model.predict(X_test)
 print(y_pred)
@@ -32,6 +52,20 @@ plt.xlabel("Actual")
 plt.ylabel("Predicted")
 plt.show()
 print("plot saved to iris scatterplot.png")
+
+metrics = ['TSS', 'RSS', 'ESS']
+values = [tss, rss, ess]
+
+plt.bar(metrics, values, color=['blue', 'red', 'green'])
+plt.title('TSS, RSS, and ESS for Multiple Linear Regression')
+plt.ylabel('Values')
+plt.show()
+
+plt.bar('MAE', mae, color='purple')
+plt.title('Mean Absolute Error (MAE)')
+plt.ylabel('Value')
+plt.show()
+
 
 import joblib
 joblib.dump(model,"Linear_regression_model.pkl")
