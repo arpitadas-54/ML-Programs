@@ -7,7 +7,7 @@ from sklearn.metrics import mean_absolute_error
 iris=pd.read_csv('IRIS-DATA.csv')
 print(iris.head())
 
-X=iris[['sepal_width','petal_length','petal_width']]
+X=iris[['petal_length','petal_width','sepal_width']]
 y=iris['sepal_length']
 
 from sklearn.model_selection import train_test_split
